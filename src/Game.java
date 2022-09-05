@@ -1,4 +1,7 @@
 import Areas.Area;
+import Areas.Field;
+import Areas.Forest;
+import Areas.Vilage;
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -35,5 +38,19 @@ public class Game {
             }
             scanner.nextLine();
         }
+    }
+
+    private void createMap() {
+        areas = new HashMap<>();
+        //создаём список локаций
+        areas.put("Vilage", new Vilage("Vilage", 0));
+        areas.put("Field01", new Field("Field01", 1));
+        areas.put("Forest01", new Forest("Forest01", 1));
+        //создаем пути между локациями
+        areas.get("Vilage").getDirections().put(Area.direction.NORTH, "Field01");
+        areas.get("Field01").getDirections().put(Area.direction.NORTH, "Forest01");
+        areas.get("Field01").getDirections().put(Area.direction.SOUTH, "Vilage");
+        areas.get("Forest01").getDirections().put(Area.direction.SOUTH, "Field01");
+
     }
 }

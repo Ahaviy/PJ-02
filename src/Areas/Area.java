@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public abstract class Area {
 
-    enum direction {
+    public enum direction {
         NORTH("север"), EAST("восток"), WEST("запад"), SOUTH("юг");
         String rusName;
 
@@ -36,5 +36,7 @@ public abstract class Area {
 
     public abstract String getLocalityName();
 
-
+    public HashMap<direction, String> getDirections() {
+        return directions;
+    }
 }
