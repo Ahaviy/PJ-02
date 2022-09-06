@@ -1,14 +1,15 @@
 package Areas;
 
+import java.awt.*;
 import java.util.HashMap;
 
 public abstract class Area {
 
-    public enum direction {
+    public enum Direction {
         NORTH("север"), EAST("восток"), WEST("запад"), SOUTH("юг");
         String rusName;
 
-        direction(String rusName) {
+        Direction(String rusName) {
             this.rusName = rusName;
         }
 
@@ -19,7 +20,7 @@ public abstract class Area {
 
     String name;
     private int dangerLevel;
-    HashMap<direction, String> directions;
+    private HashMap<Direction, Area> directions;
 
     public Area(String name, int dangerLevel) {
         this.name = name;
@@ -36,7 +37,22 @@ public abstract class Area {
 
     public abstract String getLocalityName();
 
-    public HashMap<direction, String> getDirections() {
+    public abstract String getActions();
+
+    public HashMap<Direction, Area> getDirections() {
         return directions;
+    }
+
+    protected String getDirectionsDescription(){
+        if (directions.keySet().isEmpty()) return "";
+        StringBuilder sb = new StringBuilder();
+        for (Direction direction : directions.keySet()) {
+            sb.append("На ")
+                    .append(direction.rusName)
+                    .append("е находится ")
+                    .append(directions.get(direction).getLocalityName())
+                    .append(".\n");
+        }
+        return sb.toString();
     }
 }

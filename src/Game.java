@@ -1,29 +1,38 @@
 import Areas.Area;
 import Areas.Field;
 import Areas.Forest;
-import Areas.Vilage;
-
+import Areas.Village;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class Game {
 
+    private static Game game;
     MainCharacter character;
-
     HashMap<String, Area> areas;
-    String currentArea;
+    Area currentArea;
+
+    private Game() {}
+
+    public static Game getGame(){
+        if (game == null) {
+            game = new Game();
+        }
+        return game;
+    }
 
     public static void main(String[] args) {
-        Game game = new Game();
-        game.startGame();
+        Game currentGame = Game.getGame();
+        currentGame.startGame();
     }
 
     public void startGame(){
+        createMap(); //создаём карту
+        character = MainCharacter.getMainCharacter(); //создаём персонажа
+        character.setName("Ivan");
+        //character.setName(getCharacterName());
+        System.out.println(currentArea.getDescription());
 
-        character = new MainCharacter(getCharacterName());
-
-
-        System.out.println(character.getStatus());
     }
 
     private String getCharacterName() {
@@ -34,7 +43,6 @@ public class Game {
             System.out.println(name + "- это ваше имя? (y/n)");
             if (scanner.next().toLowerCase().charAt(0) == 'y') {
                 return name;
-
             }
             scanner.nextLine();
         }
@@ -43,14 +51,16 @@ public class Game {
     private void createMap() {
         areas = new HashMap<>();
         //создаём список локаций
-        areas.put("Vilage", new Vilage("Vilage", 0));
+        areas.put("Village", new Village("Village", 0));
         areas.put("Field01", new Field("Field01", 1));
         areas.put("Forest01", new Forest("Forest01", 1));
         //создаем пути между локациями
-        areas.get("Vilage").getDirections().put(Area.direction.NORTH, "Field01");
-        areas.get("Field01").getDirections().put(Area.direction.NORTH, "Forest01");
-        areas.get("Field01").getDirections().put(Area.direction.SOUTH, "Vilage");
-        areas.get("Forest01").getDirections().put(Area.direction.SOUTH, "Field01");
+        areas.get("Village").getDirections().put(Area.Direction.NORTH, areas.get("Field01"));
+        areas.get("Field01").getDirections().put(Area.Direction.NORTH, areas.get("Forest01"));
+        areas.get("Field01").getDirections().put(Area.Direction.SOUTH, areas.get("Village"));
+        areas.get("Forest01").getDirections().put(Area.Direction.SOUTH, areas.get("Field01"));
+        //стартовая локация
+        currentArea = areas.get("Village");
 
     }
 }

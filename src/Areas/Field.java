@@ -14,6 +14,6 @@ public class Field extends Area{
 
     @Override
     public String getLocalityName() {
-        return "поля";
+        return "поле";
     }
 }
