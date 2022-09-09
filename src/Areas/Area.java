@@ -39,6 +39,17 @@ public abstract class Area {
 
     public abstract String getActions();
 
+    public abstract int getMaxActionCount();
+
+    protected String getDefaultActions() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Выберете действие:\n");
+        sb.append("1. Посмотреть статус.\n");
+        sb.append("2. Посмотреть инвентарь.\n");
+        sb.append("3. Снять/Одеть\n");
+        return sb.toString();
+    }
+
     public HashMap<Direction, Area> getDirections() {
         return directions;
     }

@@ -32,6 +32,7 @@ public class Game {
         character.setName("Ivan");
         //character.setName(getCharacterName());
         System.out.println(currentArea.getDescription());
+        System.out.println(currentArea.getActions());
 
     }
 

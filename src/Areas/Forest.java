@@ -12,6 +12,16 @@ public class Forest extends Area{
     }
 
     @Override
+    public String getActions() {
+        return null;
+    }
+
+    @Override
+    public int getMaxActionCount() {
+        return 0;
+    }
+
+    @Override
     public String getLocalityName() {
         return "лес";
     }

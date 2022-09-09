@@ -19,9 +19,17 @@ public class Village extends Area {
     @Override
     public String getActions() {
         StringBuilder sb = new StringBuilder();
-        //TODO недоделоно
+        sb.append(getDefaultActions());
+        sb.append("4. Зайти в таверну.\n");
+        sb.append("5. Зайти в кузнецу.\n");
+        sb.append("6. Зайти в лавку.\n");
+        sb.append("7. выйти из деревни навстречу приключениям");
         return sb.toString();
+    }
 
+    @Override
+    public int getMaxActionCount() {
+        return 7;
     }
 
     @Override
