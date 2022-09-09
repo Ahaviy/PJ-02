@@ -23,7 +23,7 @@ public class Village extends Area {
         sb.append("4. Зайти в таверну.\n");
         sb.append("5. Зайти в кузнецу.\n");
         sb.append("6. Зайти в лавку.\n");
-        sb.append("7. выйти из деревни навстречу приключениям");
+        sb.append("7. Выйти из деревни навстречу приключениям");
         return sb.toString();
     }
 

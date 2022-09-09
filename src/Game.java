@@ -2,7 +2,11 @@ import Areas.Area;
 import Areas.Field;
 import Areas.Forest;
 import Areas.Village;
+
+import java.io.BufferedReader;
+import java.io.Reader;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Game {
@@ -12,9 +16,10 @@ public class Game {
     HashMap<String, Area> areas;
     Area currentArea;
 
-    private Game() {}
+    private Game() {
+    }
 
-    public static Game getGame(){
+    public static Game getGame() {
         if (game == null) {
             game = new Game();
         }
@@ -26,13 +31,32 @@ public class Game {
         currentGame.startGame();
     }
 
-    public void startGame(){
+    public void startGame() {
         createMap(); //создаём карту
         character = MainCharacter.getMainCharacter(); //создаём персонажа
         character.setName("Ivan");
         //character.setName(getCharacterName());
         System.out.println(currentArea.getDescription());
         System.out.println(currentArea.getActions());
+
+        System.out.println(getActionValue());
+
+    }
+
+    private int getActionValue() {
+        while (true) {
+            Scanner scanner = new Scanner(System.in);
+            if (scanner.hasNext()) {
+                try {
+                    int value = scanner.nextInt();
+                    if (0 < value && value <= currentArea.getMaxActionCount()) {
+                        return value;
+                    }
+                } catch (InputMismatchException e) {
+                }
+                System.out.println("неправильный ввод ");
+            }
+        }
 
     }
 

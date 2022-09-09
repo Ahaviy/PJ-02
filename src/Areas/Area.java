@@ -41,6 +41,8 @@ public abstract class Area {
 
     public abstract int getMaxActionCount();
 
+    public abstract void action(int value);
+
     protected String getDefaultActions() {
         StringBuilder sb = new StringBuilder();
         sb.append("Выберете действие:\n");
