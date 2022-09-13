@@ -1,4 +1,4 @@
-package Monsters;
+package monsters;
 
 public abstract class Persona {
     int hp;

@@ -1,4 +1,4 @@
-package Monsters;
+package monsters;
 
 public enum MonsterType {
     GOBLIN, SCELETON;
