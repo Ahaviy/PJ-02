@@ -36,7 +36,7 @@ public class MainCharacter extends Persona {
         sb.append("Выберете действие:\n");
         sb.append("1. Посмотреть статус.\n");
         sb.append("2. Посмотреть инвентарь.\n");
-        sb.append("3. Снять/Одеть\n");
+        sb.append("3. Снять\\Одеть\n");
         return sb.toString().trim();
     }
 

@@ -11,7 +11,6 @@ public abstract class Area {
         Direction(String rusName) {
             this.rusName = rusName;
         }
-
     }
 
     private final String name;
