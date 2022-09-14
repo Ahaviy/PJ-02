@@ -26,7 +26,7 @@ public class Game {
             System.out.println("Ход: " + countMovies);
             System.out.println("---------------------------------------------------------------------------------");
             printDescription();//выводим описание местности
-            int value = getActionValue(printActionsList());//выводим список действий и получем ответ от игрока
+            int value = GUtils.getActionValue(printActionsList());//выводим список действий и получем ответ от игрока
             makeAction(value);//совершаем выбранное действие
         } while (!character.isDead());//Если умерли завершаем цикл
         System.out.println("Вы погибли. Игра окончена.");
@@ -67,22 +67,6 @@ public class Game {
         return count;
     }
 
-    private int getActionValue(int count) {
-        while (true) {
-            Scanner scanner = new Scanner(System.in);
-            if (scanner.hasNext()) {
-                try {
-                    int value = scanner.nextInt();
-                    if (0 < value && value <= count) {
-                        return value;
-                    }
-                } catch (InputMismatchException e) {
-                }
-                System.out.println("неправильный ввод ");
-            }
-        }
-    }
-
     private void newGame() {
         currentArea = areas.get("Village");//стартовая локация
         character.newCharacter(); //создаём персонажа
@@ -101,4 +85,8 @@ public class Game {
         areas.get("Field01").getDirections().put(Area.Direction.SOUTH, areas.get("Village"));
         areas.get("Forest01").getDirections().put(Area.Direction.SOUTH, areas.get("Field01"));
     }
+
+
+
+
 }

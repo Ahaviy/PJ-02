@@ -1,12 +1,20 @@
 package game;
 
+import equipment.Armor;
+import equipment.Weapon;
 import monsters.Persona;
 
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class MainCharacter extends Persona {
     private static MainCharacter character;
-    String name;
+    private String name;
+    private Weapon currentWeapon;
+    private Armor currentArmor;
+    private HashSet<Weapon> weaponList;
+    private HashSet<Armor> armorList;
+
 
     public static MainCharacter getMainCharacter() {
         if (character == null) {
@@ -16,17 +24,47 @@ public class MainCharacter extends Persona {
     }
 
     private MainCharacter() {
+        weaponList = new HashSet<>();
+        armorList = new HashSet<>();
+    }
+
+    @Override
+    public int getPower() {
+        return super.getPower() + currentWeapon.getWeaponPower();
+    }
+
+    @Override
+    public int getDefence() {
+        return super.getDefence() + currentArmor.getArmorDefence();
     }
 
     public void newCharacter() {
         //TODO незабыть заменить обратно
         name = "Ivan";
-        //name = getCharacterName();
-    }
+        //name = GUtils.getCharacterName();
+        setMaxHp(GUtils.generateParam(40,10));
+        setAgility(GUtils.generateParam(10,5));
+        setDexterity(GUtils.generateParam(10,15));
+        setPower(GUtils.generateParam(4,0));
+        setDefence(GUtils.generateParam(1,0));
+        setHp(getMaxHp());
 
-    public boolean isDead(){
-        //TODO переделать
-        return false;
+
+
+
+
+
+        currentWeapon = Weapon.UNARMED;
+        currentArmor = Armor.UNARMOURED;
+        weaponList.add(Weapon.UNARMED);
+        weaponList.add(Weapon.CUDGEL);
+
+        weaponList.add(Weapon.SWORD);
+        weaponList.add(Weapon.BROADSWORD);
+
+        armorList.add(Armor.UNARMOURED);
+        armorList.add(Armor.LEATHERARMOR);
+        armorList.add(Armor.PLATE);
     }
 
 
@@ -48,11 +86,14 @@ public class MainCharacter extends Persona {
         }
     }
 
-    private String printStatus() {
+    private void printStatus() {
         StringBuilder sb = new StringBuilder();
         sb.append("Вас зовут ").append(name).append("\n");
+        sb.append("Вы используете оружие: ").append(currentWeapon.getRusName()).append("\n");
+        sb.append("На вас одето: ").append(currentArmor.getRusName()).append("\n");
         //TODO реализовать статус
-        return sb.toString();
+        System.out.println(sb);
+        GUtils.pressToContinue();
     }
 
     private void printInventory() {
@@ -65,17 +106,6 @@ public class MainCharacter extends Persona {
         //TODO реализовать смену оснащения
     }
 
-    private String getCharacterName() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.print("Введите ваше имя: ");
-            String name = scanner.nextLine();
-            System.out.println(name + "- это ваше имя? (y/n)");
-            if (scanner.next().toLowerCase().charAt(0) == 'y') {
-                return name;
-            }
-            scanner.nextLine();
-        }
-    }
+
 
 }
