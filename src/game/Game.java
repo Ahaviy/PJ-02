@@ -34,7 +34,7 @@ public class Game {
 
     private void makeAction(int value) {
         int areaActionValue = value - character.getCharacterActionsList().split("\n").length + 1;
-        if (areaActionValue < 0) {
+        if (areaActionValue <= 0) {
             character.makeAction(value);
         } else {
             String destinationArea = currentArea.makeAction(areaActionValue);
