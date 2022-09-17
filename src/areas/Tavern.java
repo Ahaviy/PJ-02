@@ -16,9 +16,6 @@ public class Tavern extends Area{
         return null;
     }
 
-    @Override
-    protected String lookForSomething() {
-        return null;
-    }
+
 
 }

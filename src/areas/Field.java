@@ -18,10 +18,4 @@ public class Field extends Area{
     }
 
 
-
-    @Override
-    protected String lookForSomething() {
-        return null;
-    }
-
 }

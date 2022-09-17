@@ -4,6 +4,7 @@ import equipment.Armor;
 import equipment.Weapon;
 import monsters.Persona;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class MainCharacter extends Persona {
@@ -13,6 +14,7 @@ public class MainCharacter extends Persona {
     private Armor currentArmor;
     private HashSet<Weapon> weaponList;
     private HashSet<Armor> armorList;
+    private HashMap<Item,Integer> backpack;
 
 
     public static MainCharacter getMainCharacter() {
@@ -25,6 +27,7 @@ public class MainCharacter extends Persona {
     private MainCharacter() {
         weaponList = new HashSet<>();
         armorList = new HashSet<>();
+        backpack = new HashMap<>();
     }
 
     @Override
@@ -47,17 +50,19 @@ public class MainCharacter extends Persona {
         setPower(GUtils.generateParam(4, 0));
         setDefence(GUtils.generateParam(1, 0));
         setHp(getMaxHp());
-
-
         currentWeapon = Weapon.UNARMED;
         currentArmor = Armor.UNARMOURED;
-
+        addToBackpack(Item.COIN, 20);
         weaponList.add(Weapon.CUDGEL);
 
+/*        addToBackpack(Item.SQUIRRELTAIL, 20);
+        addToBackpack(Item.SQUIRRELTAIL, 20);
         weaponList.add(Weapon.SWORD);
         weaponList.add(Weapon.BROADSWORD);
         armorList.add(Armor.LEATHERARMOR);
-        armorList.add(Armor.PLATE);
+        armorList.add(Armor.PLATE);*/
+
+
     }
 
 
@@ -78,19 +83,41 @@ public class MainCharacter extends Persona {
         }
     }
 
+    public void addToBackpack(Item item, int count){
+        if (backpack.containsKey(item)){
+            int newCount = backpack.get(item) + count;
+            backpack.replace(item, newCount);
+        }else {
+            backpack.put(item, count);
+        }
+    }
+
     private void printStatus() {
         StringBuilder sb = new StringBuilder();
         sb.append("Вас зовут ").append(name).append("\n");
-        sb.append("Вы используете оружие: ").append(currentWeapon.getRusName()).append("\n");
-        sb.append("На вас надето: ").append(currentArmor.getRusName()).append("\n");
-        //TODO реализовать статус
+        sb.append("\nХарактеристики:").append("\n");
+        sb.append("Здоровье: ").append(getHp()).append("\\").append(getMaxHp()).append("\n");
+        sb.append("Ловкость: ").append(getAgility()).append("\n");
+        sb.append("Проворство: ").append(getDexterity()).append("\n");
+        sb.append("Сила удара: ").append(getPower()).append("\n");
+        sb.append("Броня: ").append(getDefence()).append("\n");
         System.out.println(sb);
         GUtils.pressToContinue();
     }
 
     private void printInventory() {
-        System.out.println("пока не реализовано");
-        //TODO реализовать инвентарь
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nВы используете оружие: ").append(currentWeapon.getRusName()).append("\n");
+        sb.append("На вас надето: ").append(currentArmor.getRusName()).append("\n");
+        sb.append("\nСодержимое сумки: ").append("\n");
+        if (backpack.isEmpty()) {
+            sb.append("в сумке ничего нет").append("\n");
+        } else {
+            for (Item item : backpack.keySet()){
+                sb.append(item.rusName).append(" - ").append(backpack.get(item)).append("шт. \n");
+            }
+        }
+        System.out.println(sb.toString().trim());
     }
 
     private void changeEquipment() {
@@ -141,7 +168,6 @@ public class MainCharacter extends Persona {
                 currentWeapon = soughtWeapon;
             }
         }
-
     }
 
     private int printEquipmentList() {

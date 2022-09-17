@@ -1,5 +1,8 @@
 package areas;
 
+import game.Item;
+import game.Loot;
+
 import java.util.HashMap;
 
 public abstract class Area {
@@ -64,7 +67,23 @@ public abstract class Area {
         }
     }
 
-    protected abstract String lookForSomething();
+    protected String lookForSomething() {
+        int value = dangerLevel + ((int) (Math.random() * 100)) % 25;
+        if (value % 2 == 0){
+            Loot.newLoot();
+            generateLoot(value);
+            return "takeLoot";
+        } else {
+            return "startBattle";
+        }
+
+    }
+
+    protected void generateLoot(int value){
+        int coinCount = value*3 + (int)(Math.random()*5);
+        Loot.getLoot().add(Item.COIN, coinCount);
+    }
+
 
     private String getDestinationAreaName(int value) {
         if (directions.containsKey(Direction.NORTH)) {

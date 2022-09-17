@@ -16,10 +16,4 @@ public class Forest extends Area{
         return "лес";
     }
 
-    @Override
-    protected String lookForSomething() {
-        return null;
-    }
-
-
 }

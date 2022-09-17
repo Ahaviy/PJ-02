@@ -6,8 +6,6 @@ import areas.Forest;
 import areas.Village;
 
 import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class Game {
 
@@ -37,9 +35,44 @@ public class Game {
         if (areaActionValue <= 0) {
             character.makeAction(value);
         } else {
-            String destinationArea = currentArea.makeAction(areaActionValue);
-            if (destinationArea != null) movingTo(destinationArea);
+            String resultAction = currentArea.makeAction(areaActionValue);
+            if (resultAction == null) return;
+            switch (resultAction) {
+                case "takeLoot" -> {
+                    printListLoot();
+                    addLootToBackpack();
+                    GUtils.pressToContinue();
+                }
+                case "startBattle" -> {
+                    System.out.println("типа битва");
+                    GUtils.pressToContinue();
+                    //TODO fix
+                }
+                default -> {
+                    movingTo(resultAction);
+                }
+            }
         }
+    }
+
+    private void printListLoot() {
+        Loot loot = Loot.getLoot();
+        if (loot == null || loot.getLootList().isEmpty()) return;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Вы получили: \n");
+        for (Item item : loot.getLootList().keySet()) {
+            sb.append(item.rusName).append(" - ").append(loot.getLootList().get(item)).append(" шт.\n");
+        }
+        System.out.println(sb.toString().trim());
+    }
+
+    private void addLootToBackpack() {
+        Loot loot = Loot.getLoot();
+        if (loot == null || loot.getLootList().isEmpty()) return;
+        for (Item item : loot.getLootList().keySet()) {
+            character.addToBackpack(item, loot.getLootList().get(item));
+        }
+        Loot.nullLoot();
     }
 
     private void movingTo(String destinationArea) {
@@ -85,8 +118,6 @@ public class Game {
         areas.get("Field01").getDirections().put(Area.Direction.SOUTH, areas.get("Village"));
         areas.get("Forest01").getDirections().put(Area.Direction.SOUTH, areas.get("Field01"));
     }
-
-
 
 
 }
