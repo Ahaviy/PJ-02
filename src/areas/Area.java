@@ -1,7 +1,9 @@
 package areas;
 
+import game.Battle;
 import game.Item;
 import game.Loot;
+import monsters.MonsterGenerator;
 
 import java.util.HashMap;
 
@@ -74,9 +76,16 @@ public abstract class Area {
             generateLoot(value);
             return "takeLoot";
         } else {
+            Battle.newBattle();
+            generateEnemies();
             return "startBattle";
         }
 
+    }
+
+    protected void generateEnemies(){
+        Battle.getBattle().addEnemy(MonsterGenerator.generateMonster(MonsterGenerator.Type.SQUIRREL,5));
+        Battle.getBattle().addEnemy(MonsterGenerator.generateMonster(MonsterGenerator.Type.WOLF,5));
     }
 
     protected void generateLoot(int value){

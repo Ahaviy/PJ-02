@@ -27,7 +27,7 @@ public class Game {
             int value = GUtils.getActionValue(printActionsList());//выводим список действий и получем ответ от игрока
             makeAction(value);//совершаем выбранное действие
         } while (!character.isDead());//Если умерли завершаем цикл
-        System.out.println("Вы погибли. Игра окончена.");
+        System.out.println("Вы погибли. Game Over");
     }
 
     private void makeAction(int value) {
@@ -44,9 +44,11 @@ public class Game {
                     GUtils.pressToContinue();
                 }
                 case "startBattle" -> {
-                    System.out.println("типа битва");
+
+                    Battle.getBattle().start();
+                    Battle.reset();
                     GUtils.pressToContinue();
-                    //TODO fix
+
                 }
                 default -> {
                     movingTo(resultAction);
@@ -72,7 +74,7 @@ public class Game {
         for (Item item : loot.getLootList().keySet()) {
             character.addToBackpack(item, loot.getLootList().get(item));
         }
-        Loot.nullLoot();
+        Loot.reset();
     }
 
     private void movingTo(String destinationArea) {

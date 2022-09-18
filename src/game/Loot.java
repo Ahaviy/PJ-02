@@ -11,7 +11,7 @@ public class Loot {
         instance = new Loot();
     }
 
-    public static void nullLoot() {
+    public static void reset() {
         instance = null;
     }
 

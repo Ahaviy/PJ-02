@@ -16,6 +16,10 @@ public class MainCharacter extends Persona {
     private HashSet<Armor> armorList;
     private HashMap<Item,Integer> backpack;
 
+    @Override
+    public String getRusName() {
+        return name;
+    }
 
     public static MainCharacter getMainCharacter() {
         if (character == null) {
@@ -28,6 +32,11 @@ public class MainCharacter extends Persona {
         weaponList = new HashSet<>();
         armorList = new HashSet<>();
         backpack = new HashMap<>();
+    }
+
+    @Override
+    public int getWeaponDelay() {
+        return currentWeapon.getWeaponDelay();
     }
 
     @Override
@@ -52,7 +61,7 @@ public class MainCharacter extends Persona {
         setHp(getMaxHp());
         currentWeapon = Weapon.UNARMED;
         currentArmor = Armor.UNARMOURED;
-        addToBackpack(Item.COIN, 20);
+        addToBackpack(Item.COIN, 200);
         weaponList.add(Weapon.CUDGEL);
 
 /*        addToBackpack(Item.SQUIRRELTAIL, 20);

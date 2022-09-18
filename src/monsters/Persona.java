@@ -1,14 +1,24 @@
 package monsters;
 
 public abstract class Persona {
-    int hp;
 
-    int maxHp;
-    int power;
-    int dexterity;
+    protected String rusName;
+    private int hp;
+    private int maxHp;
+    private int power;
+    private int dexterity;
+    private int agility;
+    private int defence;
 
-    int agility;
-    int defence;
+    private int weaponDelay;
+
+    public int getWeaponDelay() {
+        return weaponDelay;
+    }
+
+    public void setWeaponDelay(int weaponDelay) {
+        this.weaponDelay = weaponDelay;
+    }
 
     public void setHp(int hp) {
         this.hp = hp;
@@ -62,17 +72,20 @@ public abstract class Persona {
         return maxHp;
     }
 
-    public void changeHp(int value) {
+    public String getRusName() {
+        return rusName;
+    }
+
+    public void setRusName(String rusName) {
+        this.rusName = rusName;
+    }
+
+    public synchronized void changeHp(int value)  {
         hp += value;
         if (hp > maxHp) hp = maxHp;
     }
 
-    public int attackThe(Persona enemy) {
-        if (getDexterity() - enemy.getAgility() + (int) (Math.random() * 20) - 10 > 0) { //если атака успешна
-            return getPower() > enemy.getDefence() ? getPower() - enemy.getDefence() : 0;
-        }
-        return -1; //Если промах
-    }
+
 
 
 }
