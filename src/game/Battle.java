@@ -1,5 +1,6 @@
 package game;
 
+import monsters.Monster;
 import monsters.Persona;
 
 import java.util.LinkedList;
@@ -16,7 +17,7 @@ public class Battle {
     }
 
 
-    public static Battle getBattle(){
+    public static Battle getBattle() {
         return instance;
     }
 
@@ -24,19 +25,19 @@ public class Battle {
         instance = new Battle();
     }
 
-    public static void reset(){
+    public static void reset() {
         instance = null;
     }
 
-    public void addEnemy(Persona enemy){
+    public void addEnemy(Persona enemy) {
         characterFighter.getEnemyList().add(enemy);
         Fighter enemyFighter = new Fighter(enemy);
         enemyFighter.getEnemyList().add(MainCharacter.getMainCharacter());
         fighterList.add(enemyFighter);
     }
 
-    public void start(){
-        for (Fighter fighter : fighterList){
+    public void startBattle() {
+        for (Fighter fighter : fighterList) {
             fighter.start();
         }
         try {
@@ -45,5 +46,26 @@ public class Battle {
             throw new RuntimeException(e);
         }
         System.out.println("Конец боя");
+
+    }
+
+    public void generateReward() {
+        Loot.newLoot();
+        Loot loot = Loot.getLoot();
+        for (Fighter fighter : fighterList) {
+            if (fighter.selfPersona instanceof Monster) {
+                loot.add(((Monster) fighter.selfPersona).getLoot());
+            }
+        }
+    }
+
+    public int getExp() {
+        int exp = 0;
+        for (Fighter fighter : fighterList) {
+            if (fighter.selfPersona instanceof Monster) {
+                exp += ((Monster) fighter.selfPersona).getExp();
+            }
+        }
+        return exp;
     }
 }

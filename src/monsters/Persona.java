@@ -3,14 +3,13 @@ package monsters;
 public abstract class Persona {
 
     protected String rusName;
-    private int hp;
-    private int maxHp;
-    private int power;
-    private int dexterity;
-    private int agility;
-    private int defence;
-
-    private int weaponDelay;
+    protected int hp;
+    protected int maxHp;
+    protected int power;
+    protected int dexterity;
+    protected int agility;
+    protected int defence;
+    protected int weaponDelay;
 
     public int getWeaponDelay() {
         return weaponDelay;

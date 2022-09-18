@@ -32,6 +32,14 @@ public class Loot {
         }
     }
 
+    public void add(HashMap<Item, Integer> gainLootList){
+        for (Item item : gainLootList.keySet()) {
+            add(item, gainLootList.get(item));
+        }
+
+
+    }
+
     private Loot() {
         lootList = new HashMap<>();
     }

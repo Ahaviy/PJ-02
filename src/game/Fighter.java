@@ -7,12 +7,12 @@ import java.util.LinkedList;
 
 public class Fighter extends Thread {
 
-    final Persona fighter;
+    final Persona selfPersona;
 
     private final LinkedList<Persona> enemyList;
 
-    public Fighter(Persona fighter) {
-        this.fighter = fighter;
+    public Fighter(Persona selfPersona) {
+        this.selfPersona = selfPersona;
         enemyList = new LinkedList<>();
     }
 
@@ -22,16 +22,16 @@ public class Fighter extends Thread {
 
     @Override
     public void run() {
-        while (!fighter.isDead() && !enemyList.isEmpty()) {
+        while (!selfPersona.isDead() && !enemyList.isEmpty()) {
             Iterator<Persona> iterator = enemyList.listIterator();
             while (iterator.hasNext()) {
                 Persona enemy = iterator.next();
                 if (enemy.isDead()) {
                     iterator.remove();
                 } else {
-                    printAndApplyAttackResult(enemy, getAttackResult(fighter, enemy));
+                    printAndApplyAttackResult(enemy, getAttackResult(selfPersona, enemy));
                     try {
-                        Thread.sleep(fighter.getWeaponDelay());
+                        Thread.sleep(selfPersona.getWeaponDelay());
                     } catch (InterruptedException e) {
                         break;
                     }
@@ -43,7 +43,7 @@ public class Fighter extends Thread {
 
     private void printAndApplyAttackResult(Persona enemy, int attackResult) {
         StringBuilder sb = new StringBuilder();
-        sb.append(fighter.getRusName()).append(" атакует ").append(enemy.getRusName());
+        sb.append(selfPersona.getRusName()).append(" атакует ").append(enemy.getRusName());
         switch (attackResult) {
             case -1 -> {
                 sb.append(", но промахивается.\n");
@@ -64,7 +64,7 @@ public class Fighter extends Thread {
 
 
     private int getAttackResult(Persona whoAttacks, Persona whoAttacked) {
-        if (whoAttacks.getDexterity() - whoAttacked.getAgility() + (int) (Math.random() * 10) - 5 > 0) { //если атака успешна
+        if (whoAttacks.getDexterity() - whoAttacked.getAgility() + (int) (Math.random() * 20) - 10 > 0) { //если атака успешна
             return whoAttacks.getPower() > whoAttacked.getDefence() ? whoAttacks.getPower() - whoAttacked.getDefence() : 0;
         }
         return -1; //Если промах

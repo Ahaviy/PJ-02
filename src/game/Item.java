@@ -2,7 +2,8 @@ package game;
 
 public enum Item {
     COIN("серебряная монета"),
-    SQUIRRELTAIL ("беличьий хвост");
+    SQUIRRELTAIL ("беличьий хвост"),
+    WOLFFANG("волчий клык");
 
     final String rusName;
 

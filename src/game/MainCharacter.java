@@ -12,9 +12,12 @@ public class MainCharacter extends Persona {
     private String name;
     private Weapon currentWeapon;
     private Armor currentArmor;
+    private int level;
+    private int currentExp;
+    private int expToNextLevel;
     private HashSet<Weapon> weaponList;
     private HashSet<Armor> armorList;
-    private HashMap<Item,Integer> backpack;
+    private HashMap<Item, Integer> backpack;
 
     @Override
     public String getRusName() {
@@ -59,19 +62,38 @@ public class MainCharacter extends Persona {
         setPower(GUtils.generateParam(4, 0));
         setDefence(GUtils.generateParam(1, 0));
         setHp(getMaxHp());
+        level = 1;
+        currentExp = 0;
+        setExpToNextLevel();
         currentWeapon = Weapon.UNARMED;
         currentArmor = Armor.UNARMOURED;
         addToBackpack(Item.COIN, 200);
         weaponList.add(Weapon.CUDGEL);
+    }
 
-/*        addToBackpack(Item.SQUIRRELTAIL, 20);
-        addToBackpack(Item.SQUIRRELTAIL, 20);
-        weaponList.add(Weapon.SWORD);
-        weaponList.add(Weapon.BROADSWORD);
-        armorList.add(Armor.LEATHERARMOR);
-        armorList.add(Armor.PLATE);*/
+    public void gainExp(int expAmount) {
+        System.out.println("Вы получили очки опыта: " + expAmount);
+        currentExp += expAmount;
+        while (currentExp >= expToNextLevel) {
+            currentExp -= expToNextLevel;
+            levelUp();
+            setExpToNextLevel();
+        }
+    }
 
+    private void levelUp() {
+        level++;
+        agility++;
+        dexterity++;
+        maxHp += (int) (Math.random() * 5);
+        hp = maxHp;
+        if (level % 5 == 0) {
+            power++;
+            defence++;
+        }
 
+        System.out.println("Поздравляю вы достигли уровня: " + level + "!");
+        System.out.println("С получением уровня вы востановили здоровье.");
     }
 
 
@@ -92,24 +114,26 @@ public class MainCharacter extends Persona {
         }
     }
 
-    public void addToBackpack(Item item, int count){
-        if (backpack.containsKey(item)){
+    public void addToBackpack(Item item, int count) {
+        if (backpack.containsKey(item)) {
             int newCount = backpack.get(item) + count;
             backpack.replace(item, newCount);
-        }else {
+        } else {
             backpack.put(item, count);
         }
     }
 
     private void printStatus() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Вас зовут ").append(name).append("\n");
+        sb.append("Вас зовут: ").append(name).append(".\n");
+        sb.append("Текущий уровень: ").append(level).append(".\n");
+        sb.append("Опыт: ").append(currentExp).append("/").append(expToNextLevel).append(".\n");
         sb.append("\nХарактеристики:").append("\n");
-        sb.append("Здоровье: ").append(getHp()).append("\\").append(getMaxHp()).append("\n");
-        sb.append("Ловкость: ").append(getAgility()).append("\n");
-        sb.append("Проворство: ").append(getDexterity()).append("\n");
-        sb.append("Сила удара: ").append(getPower()).append("\n");
-        sb.append("Броня: ").append(getDefence()).append("\n");
+        sb.append("Здоровье: ").append(getHp()).append("\\").append(getMaxHp()).append(".\n");
+        sb.append("Ловкость: ").append(getAgility()).append(".\n");
+        sb.append("Проворство: ").append(getDexterity()).append(".\n");
+        sb.append("Сила удара: ").append(getPower()).append(".\n");
+        sb.append("Броня: ").append(getDefence()).append(".\n");
         System.out.println(sb);
         GUtils.pressToContinue();
     }
@@ -122,7 +146,7 @@ public class MainCharacter extends Persona {
         if (backpack.isEmpty()) {
             sb.append("в сумке ничего нет").append("\n");
         } else {
-            for (Item item : backpack.keySet()){
+            for (Item item : backpack.keySet()) {
                 sb.append(item.rusName).append(" - ").append(backpack.get(item)).append("шт. \n");
             }
         }
@@ -205,6 +229,10 @@ public class MainCharacter extends Persona {
             System.out.println(sb.toString());
         }
         return count;
+    }
+
+    private void setExpToNextLevel() {
+        expToNextLevel = level * 30;
     }
 
 

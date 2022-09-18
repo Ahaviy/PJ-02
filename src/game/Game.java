@@ -41,19 +41,23 @@ public class Game {
                 case "takeLoot" -> {
                     printListLoot();
                     addLootToBackpack();
-                    GUtils.pressToContinue();
                 }
                 case "startBattle" -> {
-
-                    Battle.getBattle().start();
+                    Battle.getBattle().startBattle();
+                    if (!character.isDead()) {
+                        character.gainExp(Battle.getBattle().getExp());
+                        Battle.getBattle().generateReward();
+                        printListLoot();
+                        addLootToBackpack();
+                    }
                     Battle.reset();
-                    GUtils.pressToContinue();
-
                 }
                 default -> {
                     movingTo(resultAction);
                 }
             }
+            countMovies++;
+            GUtils.pressToContinue();
         }
     }
 
@@ -80,7 +84,7 @@ public class Game {
     private void movingTo(String destinationArea) {
         if (areas.containsKey(destinationArea)) {
             currentArea = areas.get(destinationArea);
-            countMovies++;
+            System.out.println("Вы перемещаетесь в " + areas.get(destinationArea).getLocalityName());
         } else {
             System.out.println("не могу найти локацию " + destinationArea);
         }
