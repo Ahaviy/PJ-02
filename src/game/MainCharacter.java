@@ -17,7 +17,7 @@ public class MainCharacter extends Persona {
     private int expToNextLevel;
     private final HashSet<Weapon> weaponList;
     private final HashSet<Armor> armorList;
-    private final HashMap<Item, Integer> backpack;
+    private HashMap<Item, Integer> backpack;
 
     private int stamina;
     private int maxStamina;
@@ -29,6 +29,10 @@ public class MainCharacter extends Persona {
 
     public int getStamina() {
         return stamina;
+    }
+
+    public HashMap<Item, Integer> getBackpack() {
+        return backpack;
     }
 
     @Override
@@ -65,9 +69,7 @@ public class MainCharacter extends Persona {
     }
 
     public void newCharacter() {
-        //TODO незабыть заменить обратно
-        name = "Ivan";
-        //name = GUtils.getCharacterName();
+        name = GUtils.getCharacterName();
         setMaxHp(GUtils.generateParam(40, 10));
         setAgility(GUtils.generateParam(10, 5));
         setDexterity(GUtils.generateParam(10, 5));
@@ -182,6 +184,12 @@ public class MainCharacter extends Persona {
         provisionsCount = 3;
     }
 
+    public void clearBackpack(){
+        int countOfCoin = backpack.get(Item.COIN);
+        backpack = new HashMap<>();
+        backpack.put(Item.COIN, countOfCoin);
+    }
+
     private void printStatus() {
         StringBuilder sb = new StringBuilder();
         sb.append("Вас зовут: ").append(name).append(".\n");
@@ -203,9 +211,9 @@ public class MainCharacter extends Persona {
         sb.append("\nВы используете оружие: ").append(currentWeapon.getRusName()).append("\n");
         sb.append("На вас надето: ").append(currentArmor.getRusName()).append("\n");
         if (provisionsCount > 0) {
-            sb.append("У вас запас провизии на ").append(provisionsCount).append(" привала");
+            sb.append("У вас запас провизии на ").append(provisionsCount).append(" привала\n");
         } else {
-            sb.append("У вас с собой нет провианта.");
+            sb.append("У вас с собой нет провианта.\n");
         }
         sb.append("\nСодержимое сумки: ").append("\n");
         if (backpack.isEmpty()) {
@@ -213,6 +221,15 @@ public class MainCharacter extends Persona {
         } else {
             for (Item item : backpack.keySet()) {
                 sb.append(item.rusName).append(" - ").append(backpack.get(item)).append(" шт. \n");
+            }
+        }
+        if (!weaponList.isEmpty()  || !armorList.isEmpty()) {
+            sb.append("\nВаши оружие и броня:\n");
+            for (Weapon weapon: weaponList) {
+                sb.append(weapon.getRusName()).append("\n");
+            }
+            for (Armor armor : armorList){
+                sb.append(armor.getRusName()).append("\n");
             }
         }
         System.out.println(sb.toString().trim());
@@ -226,6 +243,8 @@ public class MainCharacter extends Persona {
             wearOrRemoveEquipment(GUtils.getActionValue(count));
         }
     }
+
+
 
     private void wearOrRemoveEquipment(int value) {
         if (value > weaponList.size() + armorList.size()) return;//если опция ни чего менять

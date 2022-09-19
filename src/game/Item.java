@@ -23,4 +23,8 @@ public enum Item {
     Item(String rusName) {
         this.rusName = rusName;
     }
+
+    public String getRusName() {
+        return rusName;
+    }
 }

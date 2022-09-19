@@ -9,22 +9,29 @@ public class Game {
     HashMap<String, Area> areas;
     Area currentArea;
     MainCharacter character;
-
     int countMovies;
 
+    /**
+     * Генерация начальных параметров, а так же основной цикл игры
+     */
     public void startGame() {
-        createMap(); //создаём карту
+        printWelcome();
+        GUtils.pressToContinue();
+        createMap();
         character = MainCharacter.getMainCharacter();
         newGame();
         do {
             printStatus();
-            printDescription();//выводим описание местности
-            int value = GUtils.getActionValue(printActionsList());//выводим список действий и получем ответ от игрока
-            makeAction(value);//совершаем выбранное действие
-        } while (!character.isDead());//Если умерли завершаем цикл
+            printDescription();
+            int value = GUtils.getActionValue(printActionsList());
+            makeAction(value);
+        } while (!character.isDead());
         System.out.println("Вы погибли. Game Over");
     }
 
+    /**
+     * Отабражает информацию в начале каждого хода.
+     */
     private void printStatus() {
         StringBuilder sb = new StringBuilder();
         sb.append("---------------------------------------------------------------------------------\n");
@@ -36,7 +43,9 @@ public class Game {
         System.out.println(sb);
     }
 
-
+    /**
+     * Выполняет действие выбраное игроком действие
+     */
     private void makeAction(int value) {
         int areaActionValue = value - character.getCharacterActionsList().split("\n").length + 1;
         if (areaActionValue <= 0) {
@@ -46,12 +55,18 @@ public class Game {
             if (resultAction == null) return;
             switch (resultAction) {
                 case "takeLoot" -> {
-                    if (!character.staminaActionCheck(4)) return;
+                    if (!character.staminaActionCheck(4)) {
+                        GUtils.pressToContinue();
+                        return;
+                    }
                     printListLoot();
                     addLootToBackpack();
                 }
                 case "startBattle" -> {
-                    if (!character.staminaActionCheck(4)) return;
+                    if (!character.staminaActionCheck(4)) {
+                        GUtils.pressToContinue();
+                        return;
+                    }
                     Battle battle = Battle.getBattle();
                     System.out.println("На вас напали враги: " + battle.getEnemyNames());
                     GUtils.pressToContinue();
@@ -78,7 +93,9 @@ public class Game {
         }
     }
 
-
+    /**
+     * Выводит список полученого в ходе поисков или битвы лута
+     */
     private void printListLoot() {
         Loot loot = Loot.getLoot();
         if (loot == null || loot.getLootList().isEmpty()) return;
@@ -90,6 +107,9 @@ public class Game {
         System.out.println(sb.toString().trim());
     }
 
+    /*
+     * Добавляет в рюкзак лут полученый в ходе поисков или битвы
+     * */
     private void addLootToBackpack() {
         Loot loot = Loot.getLoot();
         if (loot == null || loot.getLootList().isEmpty()) return;
@@ -99,6 +119,9 @@ public class Game {
         Loot.reset();
     }
 
+    /*
+     * Перемещение на другую локацию
+     * */
     private void movingTo(String destinationArea) {
         if (areas.containsKey(destinationArea)) {
             currentArea = areas.get(destinationArea);
@@ -109,11 +132,17 @@ public class Game {
         }
     }
 
+    /*
+     * Вывод на экран описание текущей и окружающи локаций
+     * */
     private void printDescription() {
         System.out.println(currentArea.getDescription());
         System.out.println(currentArea.getDirectionsDescription());
     }
 
+    /*
+     * Выводит на экран список возможных действий
+     * */
     private int printActionsList() {
         StringBuilder sb = new StringBuilder();
         String characterActions = character.getCharacterActionsList();
@@ -131,12 +160,34 @@ public class Game {
         countMovies = 1;
     }
 
+    private void printWelcome() {
+        System.out.println("Моя реализация проекта. Не четко следовал заданию, но оно предполагало некую свободу в" +
+                " реализации, которой я и воспользовался.");
+        System.out.println("Было реализованно: (в скобках отличия от задания)");
+        System.out.println("Перемещение между локациями. (не одна зона как в задании, а локации в виде разных \"биомов\"" +
+                ", каждый из которых имет своих монстров и свое наполнение лутом)  ");
+        System.out.println("Во время поиска на локации c 50% вероятностью нападают враги с 50% просто лут в" +
+                " зависимости от биома");
+        System.out.println("Чем дальше от деревни тем сильнее враги и больше лута");
+        System.out.println("Может генерироваться несколько врагов (а не 1 как в задании), каждый участник боя" +
+                " отрабатывает в своем потоке ");
+        System.out.println("Бой прикращается при смерти главного героя или смерти всех врагов, в этом случае" +
+                " получается опыт и лут");
+        System.out.println("Реализована возможность получать уровни и покупать + снимать/одевать броню и оружие");
+        System.out.println("Добавлина система выносливости, тратится на переходы между локациями и поиск. восплняется" +
+                " от привала или в таверне");
+        System.out.println("Лут скупает торговец в лавке. Доспехи и оружие продает кузнец");
+        System.out.println("У меня были ещё идеи на реализацию, но пожалуй остановлюсь, и так много получилось.");
+        System.out.println("Приятной игры! :-)");
+    }
+
     private void createMap() {
         areas = new HashMap<>();
         //создаём список локаций
         areas.put("Village", new Village("Village", 0));
         areas.put("Tavern", new Tavern("Tavern", 0));
         areas.put("Forge", new Forge("Forge", 0));
+        areas.put("Shop", new Shop("Shop", 0));
         areas.put("Field01", new Field("Field01", 1));
         areas.put("Field02", new Field("Field02", 3));
         areas.put("Field03", new Field("Field03", 4));
@@ -177,10 +228,10 @@ public class Game {
         areas.get("Field04").getDirections().put(Area.Direction.EAST, areas.get("Field02"));
         areas.get("Field04").getDirections().put(Area.Direction.SOUTH, areas.get("Field03"));
         areas.get("Field04").getDirections().put(Area.Direction.WEST, areas.get("Field07"));
-        areas.get("Field02").getDirections().put(Area.Direction.NORTH, areas.get("Wasteland02"));
-        areas.get("Field02").getDirections().put(Area.Direction.EAST, areas.get("Forest04"));
-        areas.get("Field02").getDirections().put(Area.Direction.SOUTH, areas.get("Field04"));
-        areas.get("Field02").getDirections().put(Area.Direction.WEST, areas.get("Field07"));
+        areas.get("Field05").getDirections().put(Area.Direction.NORTH, areas.get("Wasteland02"));
+        areas.get("Field05").getDirections().put(Area.Direction.EAST, areas.get("Forest04"));
+        areas.get("Field05").getDirections().put(Area.Direction.SOUTH, areas.get("Field04"));
+        areas.get("Field05").getDirections().put(Area.Direction.WEST, areas.get("Field07"));
         areas.get("Field06").getDirections().put(Area.Direction.NORTH, areas.get("Field07"));
         areas.get("Field06").getDirections().put(Area.Direction.EAST, areas.get("Field03"));
         areas.get("Field07").getDirections().put(Area.Direction.NORTH, areas.get("Wasteland01"));
@@ -198,7 +249,7 @@ public class Game {
         areas.get("Forest03").getDirections().put(Area.Direction.SOUTH, areas.get("Forest02"));
         areas.get("Forest03").getDirections().put(Area.Direction.WEST, areas.get("Forest04"));
         areas.get("Forest04").getDirections().put(Area.Direction.NORTH, areas.get("Forest05"));
-        areas.get("Forest04").getDirections().put(Area.Direction.EAST, areas.get("DForest03"));
+        areas.get("Forest04").getDirections().put(Area.Direction.EAST, areas.get("Forest03"));
         areas.get("Forest04").getDirections().put(Area.Direction.SOUTH, areas.get("Field02"));
         areas.get("Forest04").getDirections().put(Area.Direction.WEST, areas.get("Field05"));
         areas.get("Forest05").getDirections().put(Area.Direction.EAST, areas.get("DarkForest06"));
