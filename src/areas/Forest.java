@@ -16,4 +16,8 @@ public class Forest extends Area{
         return "лес";
     }
 
+    @Override
+    public int getCostOfStamina() {
+        return 2;
+    }
 }

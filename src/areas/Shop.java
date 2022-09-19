@@ -16,5 +16,8 @@ public class Shop extends Area{
         return null;
     }
 
-
+    @Override
+    public int getCostOfStamina() {
+        return 0;
+    }
 }

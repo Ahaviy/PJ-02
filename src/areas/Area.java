@@ -11,6 +11,7 @@ public abstract class Area {
 
     public enum Direction {
         NORTH("север"), EAST("восток"), WEST("запад"), SOUTH("юг");
+
         final String rusName;
 
         Direction(String rusName) {
@@ -39,6 +40,9 @@ public abstract class Area {
         return name.equals(((Area) obj).name);
     }
 
+    //TODO stamina
+    public abstract int getCostOfStamina();
+
     public abstract String getDescription();
 
     public abstract String getLocalityName();
@@ -60,8 +64,7 @@ public abstract class Area {
                 return lookForSomething();
             }
             case 2 -> {
-                //TODO привал
-                return null;
+                return "rest";
             }
             default -> {
                 return getDestinationAreaName(value - 2);

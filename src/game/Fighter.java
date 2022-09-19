@@ -38,7 +38,6 @@ public class Fighter extends Thread {
                 }
             }
         }
-
     }
 
     private void printAndApplyAttackResult(Persona enemy, int attackResult) {

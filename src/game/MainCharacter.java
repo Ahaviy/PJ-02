@@ -4,6 +4,7 @@ import equipment.Armor;
 import equipment.Weapon;
 import monsters.Persona;
 
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -15,9 +16,14 @@ public class MainCharacter extends Persona {
     private int level;
     private int currentExp;
     private int expToNextLevel;
-    private HashSet<Weapon> weaponList;
-    private HashSet<Armor> armorList;
-    private HashMap<Item, Integer> backpack;
+    private final HashSet<Weapon> weaponList;
+    private final HashSet<Armor> armorList;
+    private final HashMap<Item, Integer> backpack;
+
+    private int stamina;
+    private int maxStamina;
+    private int provisionsCount;
+
 
     @Override
     public String getRusName() {
@@ -62,6 +68,7 @@ public class MainCharacter extends Persona {
         setPower(GUtils.generateParam(4, 0));
         setDefence(GUtils.generateParam(1, 0));
         setHp(getMaxHp());
+        stamina = maxStamina = GUtils.generateParam(15, 5);
         level = 1;
         currentExp = 0;
         setExpToNextLevel();
@@ -69,6 +76,7 @@ public class MainCharacter extends Persona {
         currentArmor = Armor.UNARMOURED;
         addToBackpack(Item.COIN, 200);
         weaponList.add(Weapon.CUDGEL);
+        provisionsCount = 3;
     }
 
     public void gainExp(int expAmount) {
@@ -87,6 +95,7 @@ public class MainCharacter extends Persona {
         dexterity++;
         maxHp += (int) (Math.random() * 5);
         hp = maxHp;
+        maxStamina += 2;
         if (level % 5 == 0) {
             power++;
             defence++;
@@ -123,11 +132,46 @@ public class MainCharacter extends Persona {
         }
     }
 
+    public boolean rest(boolean isFreeRest) {
+        if (isFreeRest || provisionsCount > 0) {
+            if (!isFreeRest) provisionsCount--;
+            stamina = maxStamina;
+            return true;
+        }
+        stamina = Math.max(stamina, 3);
+        return false;
+    }
+
+    public boolean getCoins(int amount) {
+        if (backpack.get(Item.COIN) >= amount) {
+            backpack.replace(Item.COIN, backpack.get(Item.COIN) - amount);
+            return true;
+        } else {
+            System.out.println("У вас не хватает монет на это действие");
+            return false;
+        }
+    }
+
+    public boolean staminaActionCheck(int count) {
+        if (stamina >= count) {
+            stamina -= count;
+            return true;
+        }
+        System.out.println("У вас не хватает провизии на это действие.");
+        System.out.println("Попробуйте отдохнуть");
+        return false;
+    }
+
+    public void restoreProvisions() {
+        provisionsCount = 3;
+    }
+
     private void printStatus() {
         StringBuilder sb = new StringBuilder();
         sb.append("Вас зовут: ").append(name).append(".\n");
         sb.append("Текущий уровень: ").append(level).append(".\n");
         sb.append("Опыт: ").append(currentExp).append("/").append(expToNextLevel).append(".\n");
+        sb.append("Выносливость: ").append(stamina).append("/").append(maxStamina).append(".\n");
         sb.append("\nХарактеристики:").append("\n");
         sb.append("Здоровье: ").append(getHp()).append("\\").append(getMaxHp()).append(".\n");
         sb.append("Ловкость: ").append(getAgility()).append(".\n");
@@ -142,6 +186,11 @@ public class MainCharacter extends Persona {
         StringBuilder sb = new StringBuilder();
         sb.append("\nВы используете оружие: ").append(currentWeapon.getRusName()).append("\n");
         sb.append("На вас надето: ").append(currentArmor.getRusName()).append("\n");
+        if (provisionsCount > 0) {
+            sb.append("У вас запас провизии на ").append(provisionsCount).append(" привала");
+        } else {
+            sb.append("У вас с собой нет провианта.");
+        }
         sb.append("\nСодержимое сумки: ").append("\n");
         if (backpack.isEmpty()) {
             sb.append("в сумке ничего нет").append("\n");
@@ -230,6 +279,7 @@ public class MainCharacter extends Persona {
         }
         return count;
     }
+
 
     private void setExpToNextLevel() {
         expToNextLevel = level * 30;

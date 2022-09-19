@@ -10,8 +10,8 @@ public class Village extends Area {
     public String getDescription() {
         StringBuilder sb = new StringBuilder();
         sb.append("Вы находитесь в деревне.\n");
-        sb.append("Это небольшая деревушка, в которую не особенно заходят путники. Несмотря на обветшалый вид, здесь "
-                + "можно найти кров, торговца, а так же кузнеца.\n");
+        sb.append("Это небольшая деревушка, в которую не особенно заходят путники. Несмотря на обветшалый вид, здесь ");
+        sb.append("можно найти кров, торговца, а так же кузнеца.\n");
         return sb.toString().trim();
     }
 
@@ -49,4 +49,8 @@ public class Village extends Area {
         return null;
     }
 
+    @Override
+    public int getCostOfStamina() {
+        return 0;
+    }
 }

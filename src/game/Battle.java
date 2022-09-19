@@ -68,4 +68,16 @@ public class Battle {
         }
         return exp;
     }
+
+    public String getEnemyNames() {
+        StringBuilder sb = new StringBuilder();
+        for (Fighter fighter : fighterList) {
+            if (fighter.selfPersona instanceof Monster) {
+                sb.append(((Monster) fighter.selfPersona).getRusName()).append(", ");
+            }
+        }
+        if (sb.length() > 2)
+            sb.setLength(sb.length() - 2);
+        return sb.toString();
+    }
 }

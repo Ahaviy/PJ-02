@@ -16,4 +16,8 @@ public class Forge extends Area{
         return null;
     }
 
+    @Override
+    public int getCostOfStamina() {
+        return 0;
+    }
 }

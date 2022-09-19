@@ -1,9 +1,6 @@
 package game;
 
-import areas.Area;
-import areas.Field;
-import areas.Forest;
-import areas.Village;
+import areas.*;
 
 import java.util.HashMap;
 
@@ -39,18 +36,28 @@ public class Game {
             if (resultAction == null) return;
             switch (resultAction) {
                 case "takeLoot" -> {
+                    if (!character.staminaActionCheck(4)) return;
                     printListLoot();
                     addLootToBackpack();
                 }
                 case "startBattle" -> {
-                    Battle.getBattle().startBattle();
+                    if (!character.staminaActionCheck(4)) return;
+                    Battle battle = Battle.getBattle();
+                    System.out.println("На вас напали враги: " + battle.getEnemyNames());
+                    GUtils.pressToContinue();
+                    battle.startBattle();
                     if (!character.isDead()) {
-                        character.gainExp(Battle.getBattle().getExp());
-                        Battle.getBattle().generateReward();
+                        character.gainExp(battle.getExp());
+                        battle.generateReward();
                         printListLoot();
                         addLootToBackpack();
                     }
                     Battle.reset();
+                }
+                case "rest" ->{
+                    if (character.rest(false)) {
+                        System.out.println("Вы отдохнули и полностью востановили силы. (потрачена 1 ед провизии)");
+                    } else System.out.println("Вы немного востановили силы на подножном корму.");
                 }
                 default -> {
                     movingTo(resultAction);
@@ -60,6 +67,8 @@ public class Game {
             GUtils.pressToContinue();
         }
     }
+
+
 
     private void printListLoot() {
         Loot loot = Loot.getLoot();
@@ -84,6 +93,7 @@ public class Game {
     private void movingTo(String destinationArea) {
         if (areas.containsKey(destinationArea)) {
             currentArea = areas.get(destinationArea);
+            if (!character.staminaActionCheck(currentArea.getCostOfStamina())) return;
             System.out.println("Вы перемещаетесь в " + areas.get(destinationArea).getLocalityName());
         } else {
             System.out.println("не могу найти локацию " + destinationArea);
@@ -116,8 +126,10 @@ public class Game {
         areas = new HashMap<>();
         //создаём список локаций
         areas.put("Village", new Village("Village", 0));
+        areas.put("Tavern", new Tavern("Tavern", 0));
         areas.put("Field01", new Field("Field01", 1));
         areas.put("Forest01", new Forest("Forest01", 1));
+
         //создаем пути между локациями
         areas.get("Village").getDirections().put(Area.Direction.NORTH, areas.get("Field01"));
         areas.get("Field01").getDirections().put(Area.Direction.NORTH, areas.get("Forest01"));

@@ -17,5 +17,8 @@ public class Field extends Area{
         return "поле";
     }
 
-
+    @Override
+    public int getCostOfStamina() {
+        return 1;
+    }
 }
