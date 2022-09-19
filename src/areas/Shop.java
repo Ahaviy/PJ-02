@@ -20,4 +20,14 @@ public class Shop extends Area{
     public int getCostOfStamina() {
         return 0;
     }
+
+    @Override
+    protected void generateEnemies() {
+
+    }
+
+    @Override
+    protected void generateLoot() {
+
+    }
 }

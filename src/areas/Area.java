@@ -25,7 +25,7 @@ public abstract class Area {
         return name;
     }
 
-    private int dangerLevel;
+    protected int dangerLevel;
     private final HashMap<Direction, Area> directions;
 
     public Area(String name, int dangerLevel) {
@@ -76,7 +76,7 @@ public abstract class Area {
         int value = dangerLevel + ((int) (Math.random() * 100)) % 25;
         if (value % 2 == 0){
             Loot.newLoot();
-            generateLoot(value);
+            generateLoot();
             return "takeLoot";
         } else {
             Battle.newBattle();
@@ -86,15 +86,12 @@ public abstract class Area {
 
     }
 
-    protected void generateEnemies(){
-        Battle.getBattle().addEnemy(MonsterGenerator.generateMonster(MonsterGenerator.Type.SQUIRREL,5));
-        Battle.getBattle().addEnemy(MonsterGenerator.generateMonster(MonsterGenerator.Type.WOLF,5));
-    }
+    protected abstract void generateEnemies();
 
-    protected void generateLoot(int value){
+    protected abstract void generateLoot();/*{
         int coinCount = value*3 + (int)(Math.random()*5);
         Loot.getLoot().add(Item.COIN, coinCount);
-    }
+    }*/
 
 
     private String getDestinationAreaName(int value) {

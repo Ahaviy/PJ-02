@@ -3,7 +3,8 @@ package equipment;
 public enum Armor {
     UNARMOURED("Легкая одежда", 0),
     LEATHERARMOR("Коженая броня", 3),
-    PLATE("Пластичный доспех", 5);
+    CHAIN("Кольчуга", 5),
+    PLATE("Пластичный доспех", 8);
 
     private final String rusName;
     private final int armorDefence;

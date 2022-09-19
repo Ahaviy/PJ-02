@@ -50,6 +50,16 @@ public class Village extends Area {
     }
 
     @Override
+    protected void generateEnemies() {
+
+    }
+
+    @Override
+    protected void generateLoot() {
+
+    }
+
+    @Override
     public int getCostOfStamina() {
         return 0;
     }

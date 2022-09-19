@@ -4,7 +4,6 @@ import equipment.Armor;
 import equipment.Weapon;
 import monsters.Persona;
 
-import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -24,6 +23,13 @@ public class MainCharacter extends Persona {
     private int maxStamina;
     private int provisionsCount;
 
+    public int getLevel() {
+        return level;
+    }
+
+    public int getStamina() {
+        return stamina;
+    }
 
     @Override
     public String getRusName() {
@@ -74,7 +80,7 @@ public class MainCharacter extends Persona {
         setExpToNextLevel();
         currentWeapon = Weapon.UNARMED;
         currentArmor = Armor.UNARMOURED;
-        addToBackpack(Item.COIN, 200);
+        addToBackpack(Item.COIN, 20);
         weaponList.add(Weapon.CUDGEL);
         provisionsCount = 3;
     }
@@ -121,6 +127,7 @@ public class MainCharacter extends Persona {
             case 2 -> printInventory();
             case 3 -> changeEquipment();
         }
+        GUtils.pressToContinue();
     }
 
     public void addToBackpack(Item item, int count) {
@@ -136,13 +143,15 @@ public class MainCharacter extends Persona {
         if (isFreeRest || provisionsCount > 0) {
             if (!isFreeRest) provisionsCount--;
             stamina = maxStamina;
+            hp = maxHp;
             return true;
         }
         stamina = Math.max(stamina, 3);
+        hp = Math.max(hp, maxHp/4);
         return false;
     }
 
-    public boolean getCoins(int amount) {
+    public boolean takeCoins(int amount) {
         if (backpack.get(Item.COIN) >= amount) {
             backpack.replace(Item.COIN, backpack.get(Item.COIN) - amount);
             return true;
@@ -152,12 +161,19 @@ public class MainCharacter extends Persona {
         }
     }
 
+    public void addWeapon(Weapon weapon) {
+        weaponList.add(weapon);
+    }
+
+    public void addArmor(Armor armor) {
+        armorList.add(armor);
+    }
     public boolean staminaActionCheck(int count) {
         if (stamina >= count) {
             stamina -= count;
             return true;
         }
-        System.out.println("У вас не хватает провизии на это действие.");
+        System.out.println("У вас не хватает выносливости на это действие.");
         System.out.println("Попробуйте отдохнуть");
         return false;
     }
@@ -177,9 +193,9 @@ public class MainCharacter extends Persona {
         sb.append("Ловкость: ").append(getAgility()).append(".\n");
         sb.append("Проворство: ").append(getDexterity()).append(".\n");
         sb.append("Сила удара: ").append(getPower()).append(".\n");
+        sb.append("Скорость атаки: ").append(60000/getWeaponDelay()).append(".\n");
         sb.append("Броня: ").append(getDefence()).append(".\n");
         System.out.println(sb);
-        GUtils.pressToContinue();
     }
 
     private void printInventory() {
@@ -196,7 +212,7 @@ public class MainCharacter extends Persona {
             sb.append("в сумке ничего нет").append("\n");
         } else {
             for (Item item : backpack.keySet()) {
-                sb.append(item.rusName).append(" - ").append(backpack.get(item)).append("шт. \n");
+                sb.append(item.rusName).append(" - ").append(backpack.get(item)).append(" шт. \n");
             }
         }
         System.out.println(sb.toString().trim());
@@ -209,7 +225,6 @@ public class MainCharacter extends Persona {
         } else {
             wearOrRemoveEquipment(GUtils.getActionValue(count));
         }
-        GUtils.pressToContinue();
     }
 
     private void wearOrRemoveEquipment(int value) {

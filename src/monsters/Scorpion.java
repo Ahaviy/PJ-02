@@ -4,21 +4,20 @@ import game.Item;
 
 import java.util.HashMap;
 
-public class Wolf extends Monster {
-    public Wolf() {
-        rusName = "Волк";
+public class Scorpion extends Monster {
+    public Scorpion() {
+        rusName = "Гигантский скорпион";
     }
 
     @Override
     public int getExp() {
-        return 12 + level * 2;
+        return 30 + level * 5;
     }
 
     @Override
     public HashMap<Item, Integer> getLoot() {
         HashMap<Item, Integer> lootList = new HashMap<>();
-        if (Math.random() > 0.3) lootList.put(Item.WOLFFANG, 1);
-        lootList.put(Item.FUR, 1);
+        lootList.put(Item.SCORPIONTAIL, 1);
         return lootList;
     }
 }

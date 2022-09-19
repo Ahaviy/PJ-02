@@ -35,7 +35,7 @@ public class Tavern extends Area{
     public String makeAction(int value) {
         switch (value) {
             case 1 -> {
-                if (MainCharacter.getMainCharacter().getCoins(10)){
+                if (MainCharacter.getMainCharacter().takeCoins(10)){
                     MainCharacter.getMainCharacter().rest(true);
                     System.out.println("Вы отдохнули и полностью востановили силы.");
                 }
@@ -43,7 +43,7 @@ public class Tavern extends Area{
                 return null;
             }
             case 2 -> {
-                if (MainCharacter.getMainCharacter().getCoins(100)){
+                if (MainCharacter.getMainCharacter().takeCoins(100)){
                     MainCharacter.getMainCharacter().restoreProvisions();
                     System.out.println("Вы восполнили запас провизии.");
                 }
@@ -59,5 +59,15 @@ public class Tavern extends Area{
     @Override
     public int getCostOfStamina() {
         return 0;
+    }
+
+    @Override
+    protected void generateEnemies() {
+
+    }
+
+    @Override
+    protected void generateLoot() {
+
     }
 }

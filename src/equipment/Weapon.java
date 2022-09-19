@@ -2,9 +2,11 @@ package equipment;
 
 public enum Weapon {
     UNARMED("Кулаки", 0, 500),
-    CUDGEL("Дубинка", 4,800),
+    CUDGEL("Дубинка", 4, 800),
     SWORD("Меч", 5, 650),
-    BROADSWORD("Палаш", 7,600);
+    BROADSWORD("Палаш", 7, 600),
+    DAGGER("Кинжал", 2, 300),
+    PERFECTSWORD("Великолепный меч",8,680);
 
     private final String rusName;
     private final int weaponPower;

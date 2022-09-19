@@ -10,11 +10,6 @@ public class Squirrel extends Monster {
     }
 
     @Override
-    public int getWeaponDelay() {
-        return 600;
-    }
-
-    @Override
     public int getExp() {
         return 3 + level;
     }
@@ -22,8 +17,8 @@ public class Squirrel extends Monster {
     @Override
     public HashMap<Item, Integer> getLoot() {
         HashMap<Item, Integer> lootList = new HashMap<>();
-        lootList.put(Item.SQUIRRELTAIL, 1);
-        lootList.put(Item.COIN, level / 2 + 1);
+        if (Math.random() > 0.5) lootList.put(Item.SQUIRRELTAIL, 1);
+        lootList.put(Item.NUT, level / 3 + 1);
         return lootList;
     }
 }
