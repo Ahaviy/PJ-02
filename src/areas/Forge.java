@@ -40,7 +40,7 @@ public class Forge extends Area {
     }
 
     @Override
-    public String getActions(int number) {
+    public String getAreaActionsList(int number) {
         StringBuilder sb = new StringBuilder();
         sb.append(number++).append(". Купить оружие.\n");
         sb.append(number++).append(". Купить броню.\n");

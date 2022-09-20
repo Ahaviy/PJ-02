@@ -48,7 +48,7 @@ public class Shop extends Area {
     }
 
     @Override
-    public String getActions(int number) {
+    public String getAreaActionsList(int number) {
         StringBuilder sb = new StringBuilder();
         sb.append(number++).append(". Продать лут.\n");
         sb.append(number).append(". Выйти в деревню.");

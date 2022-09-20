@@ -107,9 +107,9 @@ public class Game {
         System.out.println(sb.toString().trim());
     }
 
-    /*
+    /**
      * Добавляет в рюкзак лут полученый в ходе поисков или битвы
-     * */
+     */
     private void addLootToBackpack() {
         Loot loot = Loot.getLoot();
         if (loot == null || loot.getLootList().isEmpty()) return;
@@ -119,9 +119,9 @@ public class Game {
         Loot.reset();
     }
 
-    /*
+    /**
      * Перемещение на другую локацию
-     * */
+     */
     private void movingTo(String destinationArea) {
         if (areas.containsKey(destinationArea)) {
             currentArea = areas.get(destinationArea);
@@ -132,34 +132,40 @@ public class Game {
         }
     }
 
-    /*
+    /**
      * Вывод на экран описание текущей и окружающи локаций
-     * */
+     */
     private void printDescription() {
         System.out.println(currentArea.getDescription());
         System.out.println(currentArea.getDirectionsDescription());
     }
 
-    /*
+    /**
      * Выводит на экран список возможных действий
-     * */
+     */
     private int printActionsList() {
         StringBuilder sb = new StringBuilder();
         String characterActions = character.getCharacterActionsList();
         int count = characterActions.split("\n").length;
-        String areaActions = currentArea.getActions(count);
+        String areaActions = currentArea.getAreaActionsList(count);
         count += areaActions.split("\n").length;
         System.out.println(characterActions);
         System.out.println(areaActions);
         return count;
     }
 
+    /**
+     * Сброс параметров в новую игру
+     */
     private void newGame() {
         currentArea = areas.get("Village");//стартовая локация
         character.newCharacter(); //создаём персонажа
         countMovies = 1;
     }
 
+    /**
+     * Вывод сообщения, об особеностях проекта
+     * */
     private void printWelcome() {
         System.out.println("Моя реализация проекта. Не четко следовал заданию, но оно предполагало некую свободу в" +
                 " реализации, которой я и воспользовался.");
@@ -181,6 +187,9 @@ public class Game {
         System.out.println("Приятной игры! :-)");
     }
 
+    /**
+     * Создание списка локаций и информации о локациях в которые можено попасть из каждой локации
+     * */
     private void createMap() {
         areas = new HashMap<>();
         //создаём список локаций

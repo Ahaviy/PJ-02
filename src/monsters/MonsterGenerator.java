@@ -1,10 +1,16 @@
 package monsters;
 
+/**
+ * Класс для генерации врагов
+ */
 public class MonsterGenerator {
     public enum Type {
         SQUIRREL, WOLF, LESHIY, ENT, SCELETON, VAMPIRE, GOBLIN, SCORPION;
     }
 
+    /**
+     * Возращает сгенерированный клас врага заданного типа и уровня
+     * */
     public static Persona generateMonster(Type type, int level) {
         Monster monster = null;
         switch (type) {

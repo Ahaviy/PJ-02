@@ -21,7 +21,7 @@ public class Village extends Area {
     }
 
     @Override
-    public String getActions(int number) {
+    public String getAreaActionsList(int number) {
         StringBuilder sb = new StringBuilder();
         sb.append(number++).append(". Зайти в таверну.\n");
         sb.append(number++).append(". Зайти в кузнецу.\n");

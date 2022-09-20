@@ -3,7 +3,15 @@ package game;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Вспомогательный класс для повторяемых действий связанных с вводом выводом в консоль
+ */
 public class GUtils {
+
+    /**
+     * Контролирует ввод пользователем числа для выбора действия
+     * count указывает диапозон возможных значений (от 1 до count включиельно)
+     */
     public static int getActionValue(int count) {
         while (true) {
             Scanner scanner = new Scanner(System.in);
@@ -20,11 +28,17 @@ public class GUtils {
         }
     }
 
+    /**
+     * приостанавливает игру до нажатия enter
+     */
     public static void pressToContinue() {
         System.out.println("..нажмите Enter для продолжения..");
         (new Scanner(System.in)).nextLine();
     }
 
+    /**
+     * Контралирует ввод имени персонажа
+     * */
     public static String getCharacterName() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -38,6 +52,10 @@ public class GUtils {
         }
     }
 
+
+    /**
+    * Генерирует число по заданным параметрам
+    * */
     public static int generateParam(int base, int randomAdd) {
         return base + (int) (Math.random() * randomAdd);
     }

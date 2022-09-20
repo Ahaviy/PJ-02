@@ -23,7 +23,7 @@ public class Tavern extends Area{
     }
 
     @Override
-    public String getActions(int number) {
+    public String getAreaActionsList(int number) {
         StringBuilder sb = new StringBuilder();
         sb.append(number++).append(". Отдохнуть за 10 монет.\n");
         sb.append(number++).append(". Обновить и восполнить припасы на 3 дня (за 100 монет).\n");
